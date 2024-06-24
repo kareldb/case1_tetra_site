@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Dataset Creation &#8212; Case 1 - Detectie van oppervlaktefouten op vlakke platen</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dataset_creation';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Anomaly Detection with PaDiM" href="anomaly_detection.html" />
+    <link rel="prev" title="Case 1 - Surface Defect Detection on Flat Plates" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/kul_logo.png" class="logo__image only-light" alt="Case 1 - Detectie van oppervlaktefouten op vlakke platen - Home"/>
+    <script>document.write(`<img src="_static/kul_logo.png" class="logo__image only-dark" alt="Case 1 - Detectie van oppervlaktefouten op vlakke platen - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Case 1 - Surface Defect Detection on Flat Plates
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Dataset Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="anomaly_detection.html">Anomaly Detection with PaDiM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binary_classification.html">Binary Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi_class_classification.html">Multi-Class Classification</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fdataset_creation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/dataset_creation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Dataset Creation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configurable-variables">Configurable variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversion-to-coco-format">Conversion to COCO format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-test-validation-split">Train-Test-Validation Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sahi"><strong>SAHI</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-dataset-generation"><strong>Final dataset generation</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-versions">Dataset Versions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-testing">Dataset testing</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="dataset-creation">
+<h1>Dataset Creation<a class="headerlink" href="#dataset-creation" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Before training models, the current images of the dataset are converted into a plausible format for the algorithms further used: ResNet, Yolov8, and PaDiM. This involves a train, test, validate split.</p>
+<p>This notebook also solves two issues with the dataset:</p>
+<ol class="arabic simple">
+<li><p><strong>High resolution images</strong>: Slicing Aided Hyperinference (SAHI) is used to deliver lower resolution images.</p></li>
+<li><p><strong>Imbalanced dataset</strong>: Methodologies are implemented to ensure each class is well represented in each split.</p></li>
+</ol>
+<p>This notebook uses the “Decospan fineerplaten dataset” which is annotated in the “LabelMe JSON Annotation Format” with LabelMe.</p>
+</section>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">labelme2coco</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">sahi.slicing</span> <span class="kn">import</span> <span class="n">slice_coco</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">from</span> <span class="nn">sahi.utils.coco</span> <span class="kn">import</span> <span class="n">Coco</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="configurable-variables">
+<h2>Configurable variables<a class="headerlink" href="#configurable-variables" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Naming variables</span>
+<span class="n">classes</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bg&#39;</span><span class="p">,</span> <span class="s1">&#39;faults&#39;</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+<span class="n">validate</span> <span class="o">=</span> <span class="s2">&quot;validate&quot;</span>
+<span class="n">test</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+
+<span class="c1"># Split settings</span>
+<span class="n">test_percentage</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">validate_percentage</span> <span class="o">=</span> <span class="mi">14</span>
+
+<span class="c1"># Input directory</span>
+<span class="n">labelme_annotation_directory</span> <span class="o">=</span> <span class="s2">&quot;labelme_annotations&quot;</span>
+<span class="n">image_input_extension</span> <span class="o">=</span> <span class="s2">&quot;.jpg&quot;</span>
+
+<span class="c1"># Intermediate output folders</span>
+<span class="n">coco_annotation_directory</span> <span class="o">=</span> <span class="s2">&quot;full_dataset_coco&quot;</span>
+<span class="n">coco_full_split_directory</span> <span class="o">=</span> <span class="s2">&quot;coco_full_split&quot;</span>
+<span class="n">coco_window_split_directory</span> <span class="o">=</span> <span class="s2">&quot;coco_window_split&quot;</span>
+<span class="n">sahi_output</span> <span class="o">=</span> <span class="s2">&quot;sahi_output&quot;</span>
+
+<span class="c1"># Output folders &amp; variables</span>
+<span class="n">binary_window_directory</span> <span class="o">=</span> <span class="s2">&quot;binary_window&quot;</span>
+<span class="n">fault_only</span> <span class="o">=</span> <span class="s2">&quot;fault_only&quot;</span>
+<span class="n">sampled_bg_fault</span> <span class="o">=</span> <span class="s2">&quot;sampled_bg_fault&quot;</span>
+<span class="n">full_bg_fault</span> <span class="o">=</span> <span class="s2">&quot;full_bg_fault&quot;</span>
+<span class="n">yolo_dataset</span> <span class="o">=</span> <span class="s2">&quot;yolo_dataset&quot;</span>
+
+<span class="c1">#Sahi settings</span>
+<span class="n">window_size</span> <span class="o">=</span> <span class="mi">480</span>
+<span class="n">overlap_percentage</span> <span class="o">=</span> <span class="mi">20</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="conversion-to-coco-format">
+<h2>Conversion to COCO format<a class="headerlink" href="#conversion-to-coco-format" title="Link to this heading">#</a></h2>
+<p>LabelMe uses the “LabelMe JSON Annotation Format”, this is converted to the more widely used COCO format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert labelme images to COCO format</span>
+<span class="n">labelme2coco</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">labelme_annotation_directory</span><span class="p">,</span> <span class="n">coco_annotation_directory</span><span class="p">)</span>
+
+<span class="c1"># Stats</span>
+<span class="n">coco</span> <span class="o">=</span> <span class="n">Coco</span><span class="o">.</span><span class="n">from_coco_dict_or_path</span><span class="p">(</span><span class="n">coco_annotation_directory</span><span class="o">+</span><span class="s2">&quot;/dataset.json&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">coco</span><span class="o">.</span><span class="n">stats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There are 367 listed files in folder labelme_annotations.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting labelme annotations to COCO format: 100%|██████████| 367/367 [00:00&lt;00:00, 1994.59it/s]
+05/23/2024 16:49:16 - INFO - labelme2coco -   Converted annotations in COCO format is exported to full_dataset_coco\dataset.json
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>indexing coco dataset annotations...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading coco annotations: 100%|██████████| 367/367 [00:00&lt;00:00, 4170.50it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_images&#39;: 367, &#39;num_annotations&#39;: 935, &#39;num_categories&#39;: 11, &#39;num_negative_images&#39;: 0, &#39;num_images_per_category&#39;: {&#39;open fout&#39;: 124, &#39;open voeg&#39;: 57, &#39;deuk&#39;: 73, &#39;zaag&#39;: 102, &#39;barst&#39;: 16, &#39;open knop&#39;: 18, &#39;snijfout&#39;: 7, &#39;veneer piece&#39;: 28, &#39;vlek&#39;: 35, &#39;ongekend&#39;: 2, &#39;kras&#39;: 18}, &#39;num_annotations_per_category&#39;: {&#39;open fout&#39;: 217, &#39;open voeg&#39;: 119, &#39;deuk&#39;: 85, &#39;zaag&#39;: 154, &#39;barst&#39;: 22, &#39;open knop&#39;: 137, &#39;snijfout&#39;: 24, &#39;veneer piece&#39;: 32, &#39;vlek&#39;: 94, &#39;ongekend&#39;: 3, &#39;kras&#39;: 48}, &#39;min_num_annotations_in_image&#39;: 1, &#39;max_num_annotations_in_image&#39;: 26, &#39;avg_num_annotations_in_image&#39;: 2.5476839237057223, &#39;min_annotation_area&#39;: 129, &#39;max_annotation_area&#39;: 2943700, &#39;avg_annotation_area&#39;: 110788.59786096256, &#39;min_annotation_area_per_category&#39;: {&#39;open fout&#39;: 407, &#39;open voeg&#39;: 1882, &#39;deuk&#39;: 1463, &#39;zaag&#39;: 1785, &#39;barst&#39;: 6894, &#39;open knop&#39;: 129, &#39;snijfout&#39;: 5029, &#39;veneer piece&#39;: 902, &#39;vlek&#39;: 1340, &#39;ongekend&#39;: 11532, &#39;kras&#39;: 1159}, &#39;max_annotation_area_per_category&#39;: {&#39;open fout&#39;: 2943700, &#39;open voeg&#39;: 438951, &#39;deuk&#39;: 391395, &#39;zaag&#39;: 892801, &#39;barst&#39;: 305913, &#39;open knop&#39;: 20225, &#39;snijfout&#39;: 51764, &#39;veneer piece&#39;: 325911, &#39;vlek&#39;: 685825, &#39;ongekend&#39;: 115662, &#39;kras&#39;: 339616}}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-test-validation-split">
+<h2>Train-Test-Validation Split<a class="headerlink" href="#train-test-validation-split" title="Link to this heading">#</a></h2>
+<p>In this section, we split the dataset into training, validation, and test sets. The partitioning is done based on the full-scale images, ensuring that SAHI windows originating from the same source image remain together within each of the three categories. This approach maintains the integrity of the source images across the splits.</p>
+<p>Furthermore, checks are implemented to ensure that each fault category is adequately represented in each split. This balanced representation is crucial for training robust and generalizable models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split images into train - test - validate (in memory dictionary)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">coco_annotation_directory</span><span class="o">+</span><span class="s1">&#39;/dataset.json&#39;</span><span class="p">)</span> <span class="c1"># get json cocofile</span>
+<span class="n">coco_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Calculate the number of images for each split</span>
+<span class="n">total_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span>
+<span class="n">num_validate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_images</span> <span class="o">*</span> <span class="n">validate_percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">num_test</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_images</span> <span class="o">*</span> <span class="n">test_percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">num_train</span> <span class="o">=</span> <span class="n">total_images</span> <span class="o">-</span> <span class="n">num_validate</span> <span class="o">-</span> <span class="n">num_test</span>
+
+<span class="c1"># Shuffle the images randomly</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="c1"># Change this (trial/error) to get optimal results</span>
+<span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span>
+
+<span class="c1"># Dictionary that holds split information</span>
+<span class="n">split_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">split_dict_id</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">image_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_validate</span><span class="p">:</span>
+        <span class="n">split_dict</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validate</span>
+        <span class="n">split_dict_id</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validate</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_validate</span> <span class="o">+</span> <span class="n">num_test</span><span class="p">:</span>
+        <span class="n">split_dict</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">test</span>
+        <span class="n">split_dict_id</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">test</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">split_dict</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">train</span>
+        <span class="n">split_dict_id</span><span class="p">[</span><span class="n">image_info</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">train</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To check if the specific faults types are equally distributed between train-test-validation, 2 plots are created</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Faults count dictionary</span>
+<span class="n">fault_count_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Get categories</span>
+<span class="n">cat_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cat_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]):</span>
+    <span class="n">cat_dict</span><span class="p">[</span><span class="n">cat_info</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cat_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="n">fault_count_dict</span><span class="p">[</span><span class="n">cat_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;validate&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cat_dict</span><span class="p">)</span>
+
+<span class="c1"># Get faults</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ann_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">cat_dict</span><span class="p">[</span><span class="n">ann_info</span><span class="p">[</span><span class="s2">&quot;category_id&quot;</span><span class="p">]]</span>
+    <span class="n">split</span> <span class="o">=</span> <span class="n">split_dict_id</span><span class="p">[</span><span class="n">ann_info</span><span class="p">[</span><span class="s1">&#39;image_id&#39;</span><span class="p">]]</span>
+    <span class="n">fault_count_dict</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">split</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="n">fault_count_dict</span><span class="p">)</span>    
+
+<span class="c1"># Place data in right structure for plot</span>
+<span class="n">faults</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fault_count_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">num_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;train&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fault</span> <span class="ow">in</span> <span class="n">faults</span><span class="p">]</span>
+<span class="n">num_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fault</span> <span class="ow">in</span> <span class="n">faults</span><span class="p">]</span>
+<span class="n">num_validate</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;validate&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fault</span> <span class="ow">in</span> <span class="n">faults</span><span class="p">]</span>
+
+<span class="c1"># Set up the plot</span>
+<span class="n">X_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faults</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">num_train</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">num_test</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">num_validate</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validate&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">faults</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Faults (count)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of Individual Faults&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Calculate totals and percentages</span>
+<span class="n">faults</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fault_count_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">totals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">fault</span> <span class="ow">in</span> <span class="n">faults</span><span class="p">]</span>
+<span class="n">num_train_pct</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;train&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">fault</span><span class="p">,</span> <span class="n">total</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">faults</span><span class="p">,</span> <span class="n">totals</span><span class="p">)]</span>
+<span class="n">num_test_pct</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">fault</span><span class="p">,</span> <span class="n">total</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">faults</span><span class="p">,</span> <span class="n">totals</span><span class="p">)]</span>
+<span class="n">num_validate_pct</span> <span class="o">=</span> <span class="p">[</span><span class="n">fault_count_dict</span><span class="p">[</span><span class="n">fault</span><span class="p">][</span><span class="s1">&#39;validate&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">fault</span><span class="p">,</span> <span class="n">total</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">faults</span><span class="p">,</span> <span class="n">totals</span><span class="p">)]</span>
+
+<span class="c1"># Set up the plot</span>
+<span class="n">X_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faults</span><span class="p">))</span>
+
+<span class="c1"># Create stacked bars</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">num_train_pct</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">num_test_pct</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">num_train_pct</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">num_validate_pct</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_train_pct</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">num_test_pct</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validate&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">X_axis</span><span class="p">,</span> <span class="n">faults</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fault Categories&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Percentage (%)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Percentage Split of Train, Test, and Validate Sets by Fault Category&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0: &#39;open fout&#39;, 1: &#39;open voeg&#39;, 2: &#39;deuk&#39;, 3: &#39;zaag&#39;, 4: &#39;barst&#39;, 5: &#39;open knop&#39;, 6: &#39;snijfout&#39;, 7: &#39;veneer piece&#39;, 8: &#39;vlek&#39;, 9: &#39;ongekend&#39;, 10: &#39;kras&#39;}
+{&#39;open fout&#39;: {&#39;train&#39;: 177, &#39;test&#39;: 18, &#39;validate&#39;: 22}, &#39;open voeg&#39;: {&#39;train&#39;: 72, &#39;test&#39;: 10, &#39;validate&#39;: 37}, &#39;deuk&#39;: {&#39;train&#39;: 58, &#39;test&#39;: 15, &#39;validate&#39;: 12}, &#39;zaag&#39;: {&#39;train&#39;: 124, &#39;test&#39;: 13, &#39;validate&#39;: 17}, &#39;barst&#39;: {&#39;train&#39;: 18, &#39;test&#39;: 3, &#39;validate&#39;: 1}, &#39;open knop&#39;: {&#39;train&#39;: 90, &#39;test&#39;: 34, &#39;validate&#39;: 13}, &#39;snijfout&#39;: {&#39;train&#39;: 13, &#39;test&#39;: 8, &#39;validate&#39;: 3}, &#39;veneer piece&#39;: {&#39;train&#39;: 21, &#39;test&#39;: 8, &#39;validate&#39;: 3}, &#39;vlek&#39;: {&#39;train&#39;: 76, &#39;test&#39;: 7, &#39;validate&#39;: 11}, &#39;ongekend&#39;: {&#39;train&#39;: 1, &#39;test&#39;: 0, &#39;validate&#39;: 2}, &#39;kras&#39;: {&#39;train&#39;: 32, &#39;test&#39;: 4, &#39;validate&#39;: 12}}
+</pre></div>
+</div>
+<img alt="_images/8a1c0f32752ec975b0e6529114dd94f8c2ce4c1a77a80ff42a3a84678e5c543b.png" src="_images/8a1c0f32752ec975b0e6529114dd94f8c2ce4c1a77a80ff42a3a84678e5c543b.png" />
+<img alt="_images/10faa5c5bcd1b3b55d9da13e5b134dbf9df37c0084a89f4853ff88d7a28d1eff.png" src="_images/10faa5c5bcd1b3b55d9da13e5b134dbf9df37c0084a89f4853ff88d7a28d1eff.png" />
+</div>
+</div>
+</section>
+<section id="sahi">
+<h2><strong>SAHI</strong><a class="headerlink" href="#sahi" title="Link to this heading">#</a></h2>
+<p>The high resolution images are split into multiple windows using the sliding window method. SAHI operates by dividing each high-resolution image into multiple smaller windows. This process, known as the sliding window technique, involves moving a fixed-size window across the image in steps, capturing different parts of the image in each move. This technique allows for detailed analysis of the entire image without compromising the resolution quality by resizing. It ensures that small details are captured and analyzed, which is crucial for accurate image detection and classification tasks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">train</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">test</span><span class="p">]:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">sahi_output</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">coco_dict</span><span class="p">,</span> <span class="n">coco_path</span> <span class="o">=</span> <span class="n">slice_coco</span><span class="p">(</span>
+    <span class="n">coco_annotation_file_path</span><span class="o">=</span><span class="n">coco_full_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span>
+    <span class="n">image_dir</span><span class="o">=</span><span class="n">labelme_annotation_directory</span><span class="p">,</span>
+    <span class="n">ignore_negative_samples</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_coco_annotation_file_name</span><span class="o">=</span><span class="s2">&quot;sahi&quot;</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">sahi_output</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span>
+    <span class="n">slice_height</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span>
+    <span class="n">slice_width</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span>
+    <span class="n">overlap_height_ratio</span><span class="o">=</span><span class="n">overlap_percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">overlap_width_ratio</span><span class="o">=</span><span class="n">overlap_percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">min_area_ratio</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>indexing coco dataset annotations...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading coco annotations: 100%|██████████| 264/264 [00:00&lt;00:00, 4190.84it/s]
+100%|██████████| 264/264 [10:46&lt;00:00,  2.45s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>indexing coco dataset annotations...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading coco annotations: 100%|██████████| 51/51 [00:00&lt;00:00, 2318.02it/s]
+100%|██████████| 51/51 [02:05&lt;00:00,  2.47s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>indexing coco dataset annotations...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading coco annotations: 100%|██████████| 51/51 [00:00&lt;00:00, 335.53it/s]
+100%|██████████| 51/51 [02:06&lt;00:00,  2.48s/it]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="final-dataset-generation">
+<h2><strong>Final dataset generation</strong><a class="headerlink" href="#final-dataset-generation" title="Link to this heading">#</a></h2>
+<p>To support different machine learning models, the final dataset is being prepared in multiple file formats. This ensures compatibility and optimization for diverse algorithmic requirements. The formats include:</p>
+<ul class="simple">
+<li><p><strong>COCO Format</strong>: Standard for object detection models.</p></li>
+<li><p><strong>Binary Window Format</strong>: Organizes images into binary categories within folders, typically used for simplified classification tasks.</p></li>
+<li><p><strong>YOLO Format</strong>: Popular for real-time object detection models.</p></li>
+</ul>
+<section id="dataset-versions">
+<h3>Dataset Versions<a class="headerlink" href="#dataset-versions" title="Link to this heading">#</a></h3>
+<p>Each format is subdivided into three specific versions to meet varied training demands, enhancing the dataset’s versatility:</p>
+<ol class="arabic simple">
+<li><p><strong>Fault Only</strong></p></li>
+<li><p><strong>Sampled Background + Fault</strong></p></li>
+<li><p><strong>All Background + Fault</strong></p></li>
+</ol>
+<p>These structured formats and versions are meticulously designed to refine the training process, catering to specific challenges and boosting the effectiveness of the trained models.</p>
+</section>
+<section id="dataset-testing">
+<h3>Dataset testing<a class="headerlink" href="#dataset-testing" title="Link to this heading">#</a></h3>
+<p>Since type 3 datasets are as close as possible to real world. All models (even when trained on different type datasets), are tested on type 3 test data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">[</span><span class="n">train</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">test</span><span class="p">]:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sahi_output</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/sahi_coco.json&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># faulty image dict</span>
+    <span class="n">fault_image_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;annotations&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s2">&quot;segmentation&quot;</span><span class="p">]):</span>
+            <span class="n">fault_image_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;image_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of faulty windows: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fault_image_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+    <span class="n">faulty_windows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fault_image_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="n">coco_fault_only</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">coco_full_bg_fault</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="n">coco_bg_fault</span> <span class="o">=</span> <span class="p">{}</span> 
+
+    <span class="n">coco_fault_only</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
+    <span class="n">coco_fault_only</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">coco_fault_only</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span>
+
+    <span class="n">coco_full_bg_fault</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
+    <span class="n">coco_full_bg_fault</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span>
+    <span class="n">coco_full_bg_fault</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span>
+
+    <span class="n">coco_bg_fault</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
+    <span class="n">coco_bg_fault</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">coco_bg_fault</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]</span>   
+
+
+    <span class="c1">#folder structure</span>
+    <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">[</span><span class="n">fault_only</span><span class="p">,</span> <span class="n">full_bg_fault</span><span class="p">,</span> <span class="n">sampled_bg_fault</span><span class="p">]:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">binary_window_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">z</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">binary_window_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">z</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">classes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1">#shuffle so random bg&#39;s are selected</span>
+    <span class="n">image_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">image_list</span><span class="p">)</span>
+
+    <span class="n">faults</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sampled_bg</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Copy images in the right category and train/test/validate split folder</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">imgPath</span> <span class="o">=</span> <span class="n">sahi_output</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fault_image_dict</span><span class="p">:</span>
+            <span class="n">faults</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">fault_only</span><span class="p">,</span> <span class="n">full_bg_fault</span><span class="p">,</span> <span class="n">sampled_bg_fault</span><span class="p">]:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">imgPath</span><span class="p">,</span> <span class="n">binary_window_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">classes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">faulty_windows</span><span class="p">:</span>
+                <span class="n">sampled_bg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">full_bg_fault</span><span class="p">,</span> <span class="n">sampled_bg_fault</span><span class="p">]:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">imgPath</span><span class="p">,</span> <span class="n">binary_window_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">fileName</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>    
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">full_bg_fault</span><span class="p">]:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">imgPath</span><span class="p">,</span> <span class="n">binary_window_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">fileName</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> faulty </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">faults</span><span class="p">)</span><span class="si">}</span><span class="s2"> sampled_bg </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sampled_bg</span><span class="p">)</span><span class="si">}</span><span class="s2"> total </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">coco_fault_only</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">faults</span>
+    <span class="n">coco_bg_fault</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">faults</span> <span class="o">+</span> <span class="n">sampled_bg</span>
+
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fault only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coco_fault_only</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sampled bg </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coco_bg_fault</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;full bg </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coco_full_bg_fault</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1">#save to disk</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">fault_only</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">coco_fault_only</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">sampled_bg_fault</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile2</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">coco_bg_fault</span><span class="p">,</span> <span class="n">outfile2</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">full_bg_fault</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile3</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">coco_full_bg_fault</span><span class="p">,</span> <span class="n">outfile3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Conversion to yolo format</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert current coco annotations to yolo format</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">validate</span><span class="p">]:</span>
+  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">fault_only</span><span class="p">]:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># Init Coco object</span>
+    <span class="n">coco</span> <span class="o">=</span> <span class="n">Coco</span><span class="o">.</span><span class="n">from_coco_dict_or_path</span><span class="p">(</span><span class="n">coco_window_split_directory</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="n">image_dir</span><span class="o">=</span><span class="n">sahi_output</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Export converted YoloV5 formatted dataset into given output_dir</span>
+    <span class="c1"># WARNING: this program uses symlinks, which requires administrator rights (windows only): https://stackoverflow.com/questions/32877260/privlege-error-trying-to-create-symlink-using-python-on-windows-10</span>
+    <span class="n">coco</span><span class="o">.</span><span class="n">export_as_yolov5</span><span class="p">(</span>
+    <span class="n">disable_symlink</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">yolo_dataset</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">train_split_rate</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Case 1 - Surface Defect Detection on Flat Plates</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="anomaly_detection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Anomaly Detection with PaDiM</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configurable-variables">Configurable variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversion-to-coco-format">Conversion to COCO format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-test-validation-split">Train-Test-Validation Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sahi"><strong>SAHI</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-dataset-generation"><strong>Final dataset generation</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-versions">Dataset Versions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-testing">Dataset testing</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Karel Debedts
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

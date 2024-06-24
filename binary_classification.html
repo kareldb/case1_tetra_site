@@ -1,0 +1,1384 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Binary Classification &#8212; Case 1 - Detectie van oppervlaktefouten op vlakke platen</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'binary_classification';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multi-Class Classification" href="multi_class_classification.html" />
+    <link rel="prev" title="Anomaly Detection with PaDiM" href="anomaly_detection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/kul_logo.png" class="logo__image only-light" alt="Case 1 - Detectie van oppervlaktefouten op vlakke platen - Home"/>
+    <script>document.write(`<img src="_static/kul_logo.png" class="logo__image only-dark" alt="Case 1 - Detectie van oppervlaktefouten op vlakke platen - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Case 1 - Surface Defect Detection on Flat Plates
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dataset_creation.html">Dataset Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="anomaly_detection.html">Anomaly Detection with PaDiM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Binary Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi_class_classification.html">Multi-Class Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Image Processing and Classification Pipeline</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fbinary_classification.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/binary_classification.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Binary Classification</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configurable-variables">Configurable variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataloaders">Dataloaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn-training">CNN training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-evaluation">Test evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-out-method">Cut-out Method</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="binary-classification">
+<h1>Binary Classification<a class="headerlink" href="#binary-classification" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In the realm of machine learning, binary classification stands as a fundamental task where models discern between two categories based on input data. This notebook explores the utilization of a pretrained backbone, specifically ResNet, to perform binary classification tasks efficiently. Pretrained models offer the advantage of leveraging previously learned features on large datasets, enabling quick adaptation to specific, smaller tasks with minimal training data.</p>
+<p>ResNet, known for its deep architecture and residual learning framework, is particularly adept at capturing intricate patterns in image data, making it an excellent choice for tasks that require high levels of visual discrimination. This approach not only accelerates the model training process but also significantly improves performance, especially when training data is limited.</p>
+<p>Furthermore, this notebook introduces an innovative alternative method: the cut-out technique. Unlike traditional sliding window techniques, which systematically select windows for analysis, the cut-out method strategically excises errors, providing training samples where defects are centered. This targeted approach ensures that the model consistently learns from the most critical features of the data, enhancing its ability to accurately classify new instances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">sahi.slicing</span> <span class="kn">import</span> <span class="n">slice_coco</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">sahi.slicing</span> <span class="kn">import</span> <span class="n">slice_image</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="configurable-variables">
+<h2>Configurable variables<a class="headerlink" href="#configurable-variables" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset path</span>
+<span class="n">dataset_directory</span> <span class="o">=</span> <span class="s2">&quot;../dataset/binary_window/full_bg_fault&quot;</span>
+<span class="n">validate_test_directory</span> <span class="o">=</span> <span class="s2">&quot;../dataset/binary_window/full_bg_fault&quot;</span>
+<span class="n">classes</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bg&#39;</span><span class="p">,</span> <span class="s1">&#39;faults&#39;</span><span class="p">)</span>
+<span class="n">model_directory</span> <span class="o">=</span> <span class="s2">&quot;final_models&quot;</span> <span class="c1">#directory where models are saved</span>
+
+<span class="c1"># Training configuration</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">224</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;resnet50&quot;</span>
+
+<span class="c1">#Enable CUDA for a faster training proces</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataloaders">
+<h2>Dataloaders<a class="headerlink" href="#dataloaders" title="Link to this heading">#</a></h2>
+<p>The dataset loading process involves two key operations:</p>
+<ol class="arabic simple">
+<li><p><strong>Transformations</strong>: The data is normalized and converted into Tensor format, which is required by the Convolutional Neural Network (CNN).</p></li>
+<li><p><strong>Handling Imbalanced Dataset</strong>: The imbalanced nature of the training dataset is addressed using the weighted random sampler.</p></li>
+</ol>
+<p>These steps ensure that the data is in the correct format for the CNN and that the training process is not biased by class imbalances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor transform</span>
+<span class="c1"># Normalisation parameters</span>
+<span class="n">normalize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                             <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span> 
+
+<span class="n">transform</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span>
+
+<span class="p">]),</span>
+<span class="s1">&#39;validate&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span> 
+<span class="p">]),</span>
+<span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span> 
+<span class="p">]),</span>
+<span class="p">}</span>
+
+<span class="c1"># Datasets</span>
+<span class="n">training_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">dataset_directory</span><span class="o">+</span><span class="s2">&quot;/train&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">])</span>
+<span class="n">validation_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">validate_test_directory</span><span class="o">+</span><span class="s2">&quot;/validate&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">[</span><span class="s1">&#39;validate&#39;</span><span class="p">])</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">validate_test_directory</span><span class="o">+</span><span class="s2">&quot;/test&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">])</span>
+<span class="n">datasets_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">training_dataset</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">:</span> <span class="n">validation_dataset</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="n">test_dataset</span><span class="p">}</span>
+
+<span class="c1"># Use torch.unique to get the count of images per class</span>
+<span class="n">class_labels</span><span class="p">,</span> <span class="n">class_counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">training_dataset</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Calculate class weights for sampler</span>
+<span class="n">class_weights</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">class_counts</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="c1"># List with weight value per sample (same length as dataset)</span>
+<span class="n">sample_weights</span> <span class="o">=</span> <span class="n">class_weights</span><span class="p">[</span><span class="n">training_dataset</span><span class="o">.</span><span class="n">targets</span><span class="p">]</span>
+
+<span class="c1"># Create a WeightedRandomSampler</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">WeightedRandomSampler</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">sample_weights</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_weights</span><span class="p">),</span> <span class="n">replacement</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">datasets_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">)</span>
+<span class="n">valid_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">datasets_dict</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">datasets_dict</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataloaders_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">train_loader</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">:</span> <span class="n">valid_loader</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="n">test_loader</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cnn-training">
+<h2>CNN training<a class="headerlink" href="#cnn-training" title="Link to this heading">#</a></h2>
+<p>The CNN is trained with the ResNet50 pretrained backbone. All layers are finetuned.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="c1">#for param in model.parameters(): param.requires_grad = False  # If feature extractor does not need to be updated</span>
+
+    <span class="c1">#Change last output layer to 2 classes</span>
+    <span class="n">n_inputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span>
+    <span class="n">last_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_inputs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">last_layer</span>
+
+    <span class="c1"># cuda</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Set the optimizer</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+
+    <span class="c1"># Set the loss function</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="c1"># cuda</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="c1"># Learning curves</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;training_acc&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;training_loss&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;validation_acc&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;validation_loss&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;training_recall&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;validation_recall&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;training_recall&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;validation_recall&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;training_precision&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;validation_precision&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="c1"># Loop over all epochs</span>
+    <span class="n">best_f2</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_precision</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_recall</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_accuracy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_model</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="c1"># Debug</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch </span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">))</span>
+
+        <span class="c1"># Each epoch has a training and validation phase</span>
+        <span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span><span class="s1">&#39;valid&#39;</span><span class="p">]:</span>
+            <span class="c1"># Set the network state dependent on the phase</span>
+            <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+            <span class="c1"># Reset the losses and corrects at the start of each epoch</span>
+            <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">running_corrects</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">tp</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#true positive</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#false negative</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#false positive</span>
+            
+            <span class="c1"># Extract batches from the data loaders untill all batches are retrieved</span>
+            <span class="n">num_samples</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloaders_dict</span><span class="p">[</span><span class="n">phase</span><span class="p">]:</span>
+
+                <span class="c1"># Inputs shape</span>
+                <span class="n">batch_size</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">shape</span>
+
+                <span class="c1"># Store the inputs and labels to the selected device (cuda)</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  
+
+                <span class="c1"># Forward pass through the network</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+                <span class="c1"># Softmax transforms the output probabilities into one selected class</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">class_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># Compute the loss of the batch</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+                
+                <span class="c1"># Update the losses and corrects for this batch</span>
+                <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">batch_size</span>
+                <span class="n">running_corrects</span> <span class="o">+=</span> <span class="n">class_pred</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                <span class="c1"># Calculate total samples</span>
+                <span class="n">num_samples</span> <span class="o">+=</span> <span class="n">batch_size</span>
+
+                <span class="c1"># recall &amp; precision calculation</span>
+                <span class="n">tp</span> <span class="o">+=</span> <span class="p">((</span><span class="n">class_pred</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">fn</span> <span class="o">+=</span> <span class="p">((</span><span class="n">class_pred</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">fp</span> <span class="o">+=</span> <span class="p">((</span><span class="n">class_pred</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                <span class="c1"># If in training phase, adapt the model paramters to account for the losses</span>
+                <span class="k">if</span> <span class="n">phase</span><span class="o">==</span><span class="s1">&#39;train&#39;</span><span class="p">:</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> <span class="c1"># Pytorch keeps track of the gradients over multiple epochs, therefore initialise it to 0</span>
+                    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># Calculate the weight gradients (Backward Propagation)</span>
+                    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c1"># Update the model parameters using the defined optimizer </span>
+                    
+
+            <span class="c1"># Save results</span>
+            <span class="n">recall</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">precision</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>     
+
+            <span class="k">if</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">running_corrects</span><span class="o">/</span><span class="n">num_samples</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">running_loss</span><span class="o">/</span><span class="n">num_samples</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_recall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_precision&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train_acc </span><span class="si">%.3f</span><span class="s2"> train_loss </span><span class="si">%.3f</span><span class="s2"> train_recall </span><span class="si">%.3f</span><span class="s2"> train_precision </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">running_corrects</span><span class="o">/</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">precision</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">phase</span> <span class="o">==</span> <span class="s1">&#39;valid&#39;</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_acc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">running_corrects</span><span class="o">/</span><span class="n">num_samples</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">running_loss</span><span class="o">/</span><span class="n">num_samples</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_recall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_precision&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;val_acc </span><span class="si">%.3f</span><span class="s2"> val_loss </span><span class="si">%.3f</span><span class="s2"> val_recall </span><span class="si">%.3f</span><span class="s2"> val_precision </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">running_corrects</span><span class="o">/</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">precision</span><span class="p">))</span>
+
+            <span class="n">f2_score</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">precision</span><span class="o">*</span><span class="n">recall</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+            <span class="c1"># Deep copy the model, the F2 score is used since false negatives are more costly</span>
+            <span class="k">if</span> <span class="n">phase</span><span class="o">==</span><span class="s1">&#39;valid&#39;</span> <span class="ow">and</span> <span class="n">f2_score</span> <span class="o">&gt;</span> <span class="n">best_f2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F2 score: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">f2_score</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+                <span class="n">best_f2</span> <span class="o">=</span> <span class="n">f2_score</span>
+                <span class="n">best_model</span> <span class="o">=</span> <span class="n">model</span>
+                <span class="n">best_recall</span> <span class="o">=</span> <span class="n">recall</span>
+                <span class="n">best_precision</span> <span class="o">=</span> <span class="n">precision</span>
+                <span class="n">best_accuracy</span> <span class="o">=</span> <span class="n">running_corrects</span><span class="o">/</span><span class="n">num_samples</span>
+
+    <span class="c1"># Print</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best val f2: </span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_f2</span><span class="p">))</span>
+
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+    <span class="c1"># Plot training and validation loss</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_loss&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;bo-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Loss&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_loss&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;ro-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation Loss&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Plot training and validation accuracy</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_acc&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_acc&#39;</span><span class="p">],</span> <span class="s1">&#39;bo-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_acc&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_acc&#39;</span><span class="p">],</span> <span class="s1">&#39;ro-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Plot training and validation recall</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_recall&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_recall&#39;</span><span class="p">],</span> <span class="s1">&#39;bo-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Recall&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_recall&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_recall&#39;</span><span class="p">],</span> <span class="s1">&#39;ro-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation Recall&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Recall&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Recall&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Plot training and validation precision</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_precision&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;training_precision&#39;</span><span class="p">],</span> <span class="s1">&#39;bo-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Precision&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_precision&#39;</span><span class="p">])),</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;validation_precision&#39;</span><span class="p">],</span> <span class="s1">&#39;ro-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation Precision&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Precision&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Precision&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">best_f2</span><span class="p">,</span> <span class="n">best_accuracy</span><span class="p">,</span> <span class="n">best_recall</span><span class="p">,</span> <span class="n">best_precision</span><span class="p">,</span> <span class="n">best_model</span><span class="p">,</span>
+
+
+<span class="n">fn_model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Is CUDA supported by this system? </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">best_f2</span><span class="p">,</span> <span class="n">best_accuracy</span><span class="p">,</span> <span class="n">best_recall</span><span class="p">,</span> <span class="n">best_precision</span><span class="p">,</span> <span class="n">best_model</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">fn_model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best F2 Score:&quot;</span><span class="p">,</span> <span class="n">best_f2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Accuracy:&quot;</span><span class="p">,</span> <span class="n">best_accuracy</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Recall:&quot;</span><span class="p">,</span> <span class="n">best_recall</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Precision:&quot;</span><span class="p">,</span> <span class="n">best_precision</span><span class="p">)</span>
+
+<span class="c1"># save model</span>
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">model_directory</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">model_name</span><span class="o">+</span><span class="s1">&#39;.pth&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">model_directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">best_model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\torchvision\models\_utils.py:208: UserWarning: The parameter &#39;pretrained&#39; is deprecated since 0.13 and may be removed in the future, please use &#39;weights&#39; instead.
+  warnings.warn(
+c:\Users\admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\torchvision\models\_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for &#39;weights&#39; are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Is CUDA supported by this system? True
+ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer2): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (3): Bottleneck(
+      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer3): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (3): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (4): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (5): Bottleneck(
+      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (layer4): Sequential(
+    (0): Bottleneck(
+      (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (downsample): Sequential(
+        (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): Bottleneck(
+      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+    (2): Bottleneck(
+      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (fc): Linear(in_features=2048, out_features=2, bias=True)
+)
+Epoch 1/20
+train_acc 0.909 train_loss 0.230 train_recall 0.901 train_precision 0.917
+val_acc 0.973 val_loss 0.097 val_recall 0.773 val_precision 0.540
+F2 score: 0.7118412046543465
+----------
+Epoch 2/20
+train_acc 0.986 train_loss 0.051 train_recall 0.989 train_precision 0.983
+val_acc 0.982 val_loss 0.075 val_recall 0.651 val_precision 0.720
+Epoch 3/20
+train_acc 0.994 train_loss 0.025 train_recall 0.997 train_precision 0.991
+val_acc 0.981 val_loss 0.085 val_recall 0.634 val_precision 0.707
+Epoch 4/20
+train_acc 0.997 train_loss 0.015 train_recall 0.998 train_precision 0.995
+val_acc 0.981 val_loss 0.089 val_recall 0.606 val_precision 0.729
+Epoch 5/20
+train_acc 0.998 train_loss 0.009 train_recall 0.999 train_precision 0.997
+val_acc 0.982 val_loss 0.092 val_recall 0.606 val_precision 0.751
+Epoch 6/20
+train_acc 0.999 train_loss 0.006 train_recall 0.999 train_precision 0.998
+val_acc 0.982 val_loss 0.096 val_recall 0.591 val_precision 0.761
+Epoch 7/20
+train_acc 0.999 train_loss 0.005 train_recall 0.999 train_precision 0.998
+val_acc 0.982 val_loss 0.099 val_recall 0.593 val_precision 0.763
+Epoch 8/20
+train_acc 0.999 train_loss 0.004 train_recall 0.999 train_precision 0.999
+val_acc 0.982 val_loss 0.105 val_recall 0.613 val_precision 0.737
+Epoch 9/20
+train_acc 0.999 train_loss 0.004 train_recall 1.000 train_precision 0.999
+val_acc 0.982 val_loss 0.103 val_recall 0.608 val_precision 0.760
+Epoch 10/20
+train_acc 0.999 train_loss 0.003 train_recall 1.000 train_precision 0.999
+val_acc 0.982 val_loss 0.105 val_recall 0.591 val_precision 0.759
+Epoch 11/20
+train_acc 1.000 train_loss 0.002 train_recall 1.000 train_precision 0.999
+val_acc 0.982 val_loss 0.111 val_recall 0.561 val_precision 0.765
+Epoch 12/20
+train_acc 1.000 train_loss 0.002 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.111 val_recall 0.572 val_precision 0.784
+Epoch 13/20
+train_acc 1.000 train_loss 0.002 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.116 val_recall 0.572 val_precision 0.760
+Epoch 14/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.113 val_recall 0.587 val_precision 0.765
+Epoch 15/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.116 val_recall 0.565 val_precision 0.776
+Epoch 16/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.120 val_recall 0.567 val_precision 0.776
+Epoch 17/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.981 val_loss 0.122 val_recall 0.554 val_precision 0.758
+Epoch 18/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.118 val_recall 0.567 val_precision 0.772
+Epoch 19/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.981 val_loss 0.117 val_recall 0.543 val_precision 0.777
+Epoch 20/20
+train_acc 1.000 train_loss 0.001 train_recall 1.000 train_precision 1.000
+val_acc 0.982 val_loss 0.121 val_recall 0.572 val_precision 0.772
+Best val f2: 0.7118
+</pre></div>
+</div>
+<img alt="_images/430c0239bc5dc964c3bf6892f9be6cd4b065b95c0e63ed56f090d785b69a2ee6.png" src="_images/430c0239bc5dc964c3bf6892f9be6cd4b065b95c0e63ed56f090d785b69a2ee6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>resnet50_eu_eik
+Best F2 Score: 0.7118412046543465
+Best Accuracy: 0.9733019238319591
+Best Recall: 0.7732342007434945
+Best Precision: 0.5402597402597402
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-evaluation">
+<h2>Test evaluation<a class="headerlink" href="#test-evaluation" title="Link to this heading">#</a></h2>
+<p>The model is applied in combination with a sliding window on the test dataset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normalisation parameters</span>
+<span class="n">normalize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                 <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span> 
+
+<span class="k">class</span> <span class="nc">ImageFolderWithPaths</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom dataset that includes image file paths. Extends torchvision.datasets.ImageFolder&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="c1"># Call the original __getitem__</span>
+        <span class="n">original_tuple</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ImageFolderWithPaths</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="c1"># Get the image path</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Extract the filename from the path</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="c1"># Add the filename to the original tuple</span>
+        <span class="n">tuple_with_filename</span> <span class="o">=</span> <span class="n">original_tuple</span> <span class="o">+</span> <span class="p">(</span><span class="n">filename</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="n">tuple_with_filename</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">validate_test_directory</span> <span class="o">+</span> <span class="s2">&quot;/test&quot;</span>
+
+<span class="c1"># Define transformations</span>
+<span class="n">transformed_dataset</span> <span class="o">=</span> <span class="n">ImageFolderWithPaths</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">normalize</span><span class="p">,</span>
+<span class="p">]))</span>
+
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">transformed_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get main coco file with all windows and corresponding errors</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../dataset/sahi_output/test/sahi_coco.json&#39;</span><span class="p">)</span> 
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># category dict</span>
+<span class="n">cat_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]:</span>
+    <span class="n">cat_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># fault dict</span>
+<span class="n">fault_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]:</span>
+    <span class="n">fault_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;image_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cat_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]]</span>
+
+<span class="c1"># path dict</span>
+<span class="n">path_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fault_dict</span><span class="p">:</span>
+        <span class="n">path_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fault_dict</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">path_dict</span><span class="p">)</span>
+
+<span class="c1"># create confusion matrix dict</span>
+<span class="n">confusion_matrix_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cat_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+     <span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;guess_bg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;guess_fault&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;guess_bg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;guess_fault&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>    
+
+
+
+<span class="k">def</span> <span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="c1"># Ensure model is in evaluation mode</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="c1"># Initialize metrics</span>
+    <span class="n">running_corrects</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># true positives</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># false negatives</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># false positives</span>
+    <span class="n">total_samples</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># No gradient is needed for evaluation</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="c1"># Forward pass</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Update metrics</span>
+            <span class="n">running_corrects</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">tp</span> <span class="o">+=</span> <span class="p">((</span><span class="n">preds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">fn</span> <span class="o">+=</span> <span class="p">((</span><span class="n">preds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">fp</span> <span class="o">+=</span> <span class="p">((</span><span class="n">preds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">total_samples</span> <span class="o">+=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># Confusion matrix update, 1 = positive = faulty</span>
+            
+            <span class="c1"># input is background image</span>
+            <span class="k">if</span> <span class="n">labels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">preds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s2">&quot;guess_fault&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s2">&quot;guess_bg&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># input is faulty image</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">path_dict</span><span class="p">:</span>
+                    <span class="n">window_fault</span> <span class="o">=</span> <span class="n">path_dict</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">preds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">window_fault</span><span class="p">][</span><span class="s2">&quot;guess_fault&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">confusion_matrix_dict</span><span class="p">[</span><span class="n">window_fault</span><span class="p">][</span><span class="s2">&quot;guess_bg&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate metrics</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">running_corrects</span> <span class="o">/</span> <span class="n">total_samples</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">precision</span>
+
+<span class="c1"># Assuming you have defined your test_loader and have the &#39;best_model&#39; and &#39;device&#39; from the previous training</span>
+<span class="n">accuracy</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">precision</span> <span class="o">=</span> <span class="n">evaluate_model</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">dataloaders_dict</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Recall: </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;PO22-34546_9_1_annotated_11129_0_11577_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34546_9_1_annotated_11168_0_11616_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34546_9_1_annotated_11129_718_11577_1166.png&#39;: &#39;open fout&#39;, &#39;PO22-34546_9_1_annotated_11168_718_11616_1166.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_0_0_448_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_3590_0_4038_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_3949_0_4397_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_4308_0_4756_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_4667_0_5115_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_5026_0_5474_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_5385_0_5833_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_6103_0_6551_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_6462_0_6910_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_6821_0_7269_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_7180_0_7628_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_7539_0_7987_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_7898_0_8346_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_8257_0_8705_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_8616_0_9064_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34549_7_1_annotated_8975_0_9423_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34565_25_1_annotated_9334_7441_9782_7889.png&#39;: &#39;open fout&#39;, &#39;PO22-34565_25_1_annotated_9693_7441_10141_7889.png&#39;: &#39;open fout&#39;, &#39;PO22-34565_25_1_annotated_10052_7441_10500_7889.png&#39;: &#39;open fout&#39;, &#39;PO22-34565_25_1_annotated_10352_7441_10800_7889.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_0_10892_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_359_10892_807.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_4308_10892_4756.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_4667_10892_5115.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_5026_10892_5474.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_5385_10892_5833.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_5744_10892_6192.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10411_6103_10859_6551.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_6103_10892_6551.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10411_6462_10859_6910.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_6462_10892_6910.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10411_6821_10859_7269.png&#39;: &#39;open fout&#39;, &#39;PO22-34570_4_2_annotated_10444_6821_10892_7269.png&#39;: &#39;open fout&#39;, &#39;PO22-34595_45_2_annotated_11488_0_11936_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34595_45_2_annotated_11542_0_11990_448.png&#39;: &#39;open fout&#39;, &#39;PO22-34666_3_2_annotated_9238_0_9686_448.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_359_9686_807.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_718_9686_1166.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_1077_9686_1525.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_1436_9686_1884.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_1795_9686_2243.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_2154_9686_2602.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_2513_9686_2961.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_2872_9686_3320.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_3231_9686_3679.png&#39;: &#39;zaag&#39;, &#39;PO22-34666_3_2_annotated_9238_3590_9686_4038.png&#39;: &#39;zaag&#39;, &#39;PO22-34913_39_2_annotated_0_1436_448_1884.png&#39;: &#39;ongekend&#39;, &#39;PO22-34913_39_2_annotated_0_1795_448_2243.png&#39;: &#39;ongekend&#39;, &#39;PO22-34913_39_2_annotated_7180_1795_7628_2243.png&#39;: &#39;open fout&#39;, &#39;PO22-34913_39_2_annotated_7539_1795_7987_2243.png&#39;: &#39;open fout&#39;, &#39;PO22-34913_39_2_annotated_7898_1795_8346_2243.png&#39;: &#39;open fout&#39;, &#39;PO22-34913_39_2_annotated_8257_1795_8705_2243.png&#39;: &#39;open fout&#39;, &#39;PO22-34913_39_2_annotated_8548_1795_8996_2243.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_2513_2513_2961_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_2872_2513_3320_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_3231_2513_3679_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_3590_2513_4038_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_3949_2513_4397_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_4308_2513_4756_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_4667_2513_5115_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_5026_2513_5474_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_5385_2513_5833_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_5744_2513_6192_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_6103_2513_6551_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_6462_2513_6910_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_6821_2513_7269_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_7180_2513_7628_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_7539_2513_7987_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_7898_2513_8346_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35136_63_2_annotated_8257_2513_8705_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35328_28_1_annotated_9690_0_10138_448.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_359_10138_807.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_718_10138_1166.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_1077_10138_1525.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_1436_10138_1884.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_1795_10138_2243.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_2154_10138_2602.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_2513_10138_2961.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_2872_10138_3320.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_3231_10138_3679.png&#39;: &#39;zaag&#39;, &#39;PO22-35328_28_1_annotated_9690_3590_10138_4038.png&#39;: &#39;zaag&#39;, &#39;PO22-35474_25_2_annotated_15431_0_15879_448.png&#39;: &#39;open fout&#39;, &#39;PO22-35474_25_2_annotated_15431_1077_15879_1525.png&#39;: &#39;open fout&#39;, &#39;PO22-35474_25_2_annotated_15431_1436_15879_1884.png&#39;: &#39;open fout&#39;, &#39;PO22-35474_25_2_annotated_15431_2513_15879_2961.png&#39;: &#39;open fout&#39;, &#39;PO22-35474_25_2_annotated_15431_2872_15879_3320.png&#39;: &#39;open fout&#39;, &#39;PO22-35474_25_2_annotated_15431_3590_15879_4038.png&#39;: &#39;open fout&#39;, &#39;PO23-00458_1_1_annotated_9685_0_10133_448.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_359_10133_807.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_718_10133_1166.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_1077_10133_1525.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_1436_10133_1884.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_1795_10133_2243.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_2154_10133_2602.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_2513_10133_2961.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_2872_10133_3320.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_3231_10133_3679.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_3590_10133_4038.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_3949_10133_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_0_4082_448_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_359_4082_807_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_718_4082_1166_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_1077_4082_1525_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_1436_4082_1884_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_1795_4082_2243_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00458_1_1_annotated_9685_4082_10133_4530.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_11488_3949_11936_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_11847_3949_12295_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_12184_3949_12632_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_11488_3967_11936_4415.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_11847_3967_12295_4415.png&#39;: &#39;zaag&#39;, &#39;PO23-00459_69_1_annotated_12184_3967_12632_4415.png&#39;: &#39;zaag&#39;, &#39;PO23-00610_53_1_annotated_1795_4277_2243_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_2154_4277_2602_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_2513_4277_2961_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_2872_4277_3320_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_3231_4277_3679_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_3590_4277_4038_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_3949_4277_4397_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_4308_4277_4756_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_4667_4277_5115_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_5026_4277_5474_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_5385_4277_5833_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_5744_4277_6192_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_6103_4277_6551_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00610_53_1_annotated_6462_4277_6910_4725.png&#39;: &#39;open voeg&#39;, &#39;PO23-00923_155_2_annotated_6821_718_7269_1166.png&#39;: &#39;kras&#39;, &#39;PO23-00923_155_2_annotated_7180_718_7628_1166.png&#39;: &#39;kras&#39;, &#39;PO23-00923_155_2_annotated_7180_1077_7628_1525.png&#39;: &#39;kras&#39;, &#39;PO23-01592_242_1_annotated_0_3949_448_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_359_3949_807_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_718_3949_1166_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_7180_3949_7628_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_0_4122_448_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_359_4122_807_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_718_4122_1166_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_6103_4122_6551_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_6462_4122_6910_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_6821_4122_7269_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_7180_4122_7628_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-01592_242_1_annotated_9668_4122_10116_4570.png&#39;: &#39;zaag&#39;, &#39;PO23-05505_160_2_annotated_1436_0_1884_448.png&#39;: &#39;vlek&#39;, &#39;PO23-05505_160_2_annotated_1795_0_2243_448.png&#39;: &#39;vlek&#39;, &#39;PO23-05505_160_2_annotated_2872_0_3320_448.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_6103_0_6551_448.png&#39;: &#39;vlek&#39;, &#39;PO23-05505_160_2_annotated_7539_0_7987_448.png&#39;: &#39;veneer piece&#39;, &#39;PO23-05505_160_2_annotated_7898_0_8346_448.png&#39;: &#39;veneer piece&#39;, &#39;PO23-05505_160_2_annotated_2872_359_3320_807.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_718_3320_1166.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_1077_3320_1525.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_1436_3320_1884.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_5744_1436_6192_1884.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_1795_3320_2243.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_5744_1795_6192_2243.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_2154_3320_2602.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_2513_3320_2961.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_2872_3320_3320.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_3231_3320_3679.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_3590_3320_4038.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_3949_3320_4397.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_1795_4308_2243_4756.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2154_4308_2602_4756.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2513_4308_2961_4756.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_4308_3320_4756.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_1795_4411_2243_4859.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2154_4411_2602_4859.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2513_4411_2961_4859.png&#39;: &#39;kras&#39;, &#39;PO23-05505_160_2_annotated_2872_4411_3320_4859.png&#39;: &#39;kras&#39;, &#39;PO23-05989_23_2_annotated_6051_0_6499_448.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_359_6499_807.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_718_6499_1166.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_1077_6499_1525.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_1436_6499_1884.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_1795_6499_2243.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_2154_6499_2602.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_2513_6499_2961.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_2872_6499_3320.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_3231_6499_3679.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_3590_6499_4038.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1077_4308_1525_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1436_4308_1884_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1795_4308_2243_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2154_4308_2602_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2513_4308_2961_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2872_4308_3320_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3231_4308_3679_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3590_4308_4038_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3949_4308_4397_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_4308_4308_4756_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_4667_4308_5115_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5026_4308_5474_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5385_4308_5833_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5744_4308_6192_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_4308_6499_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_0_4376_448_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_359_4376_807_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_718_4376_1166_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1077_4376_1525_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1436_4376_1884_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_1795_4376_2243_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2154_4376_2602_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2513_4376_2961_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_2872_4376_3320_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3231_4376_3679_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3590_4376_4038_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_3949_4376_4397_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_4308_4376_4756_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_4667_4376_5115_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5026_4376_5474_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5385_4376_5833_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_5744_4376_6192_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-05989_23_2_annotated_6051_4376_6499_4824.png&#39;: &#39;open fout&#39;, &#39;PO23-07206_112_2_annotated_0_0_448_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_359_0_807_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_718_0_1166_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_1077_0_1525_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_1436_0_1884_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_1795_0_2243_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_2154_0_2602_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_2513_0_2961_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_2872_0_3320_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_3231_0_3679_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_3590_0_4038_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_3949_0_4397_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_4308_0_4756_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_4667_0_5115_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_5026_0_5474_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_5385_0_5833_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_5744_0_6192_448.png&#39;: &#39;zaag&#39;, &#39;PO23-07206_112_2_annotated_7767_5744_8215_6192.png&#39;: &#39;deuk&#39;, &#39;PO23-07206_112_2_annotated_7767_6103_8215_6551.png&#39;: &#39;deuk&#39;, &#39;PO23-07371_12_1_annotated_0_0_448_448.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_359_448_807.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_718_448_1166.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_1077_448_1525.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_1436_448_1884.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_1795_448_2243.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_2154_448_2602.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_2513_448_2961.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_2872_448_3320.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_3231_448_3679.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_3590_448_4038.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_3949_448_4397.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_0_4217_448_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_359_4217_807_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_718_4217_1166_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_1077_4217_1525_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_1436_4217_1884_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_1795_4217_2243_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_2154_4217_2602_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_2513_4217_2961_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_2872_4217_3320_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_3231_4217_3679_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_3590_4217_4038_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07371_12_1_annotated_3949_4217_4397_4665.png&#39;: &#39;open fout&#39;, &#39;PO23-07684_45_2_annotated_6103_0_6551_448.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_6103_718_6551_1166.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_3949_1436_4397_1884.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_4667_1436_5115_1884.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_5026_1436_5474_1884.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_6103_1436_6551_1884.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_3949_1795_4397_2243.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_4308_1795_4756_2243.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_4667_1795_5115_2243.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_5026_1795_5474_2243.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_5385_1795_5833_2243.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_6103_1795_6551_2243.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_6594_1795_7042_2243.png&#39;: &#39;veneer piece&#39;, &#39;PO23-07684_45_2_annotated_3949_2154_4397_2602.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_4308_2154_4756_2602.png&#39;: &#39;kras&#39;, &#39;PO23-07684_45_2_annotated_4667_2154_5115_2602.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_5026_2154_5474_2602.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_5385_2154_5833_2602.png&#39;: &#39;barst&#39;, &#39;PO23-07684_45_2_annotated_6103_2154_6551_2602.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_6594_2154_7042_2602.png&#39;: &#39;veneer piece&#39;, &#39;PO23-07684_45_2_annotated_6103_2513_6551_2961.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_6103_2872_6551_3320.png&#39;: &#39;open knop&#39;, &#39;PO23-07684_45_2_annotated_6103_3231_6551_3679.png&#39;: &#39;open knop&#39;, &#39;PO23-07919_18_1_annotated_5026_359_5474_807.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_5385_359_5833_807.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_5026_718_5474_1166.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_5385_718_5833_1166.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_5385_1077_5833_1525.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_3231_1795_3679_2243.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_6103_1795_6551_2243.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_3231_2154_3679_2602.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_3590_2154_4038_2602.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_6103_2154_6551_2602.png&#39;: &#39;snijfout&#39;, &#39;PO23-07919_18_1_annotated_2872_3590_3320_4038.png&#39;: &#39;snijfout&#39;, &#39;PO23-08548_1_2_annotated_0_0_448_448.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_359_448_807.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_718_448_1166.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_1077_448_1525.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_1436_448_1884.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_1795_448_2243.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_2154_448_2602.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_2513_448_2961.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_2872_448_3320.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_3231_448_3679.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_3590_448_4038.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_3949_448_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-08548_1_2_annotated_0_4072_448_4520.png&#39;: &#39;zaag&#39;, &#39;PO23-09456_6_1_annotated_7539_5026_7987_5474.png&#39;: &#39;vlek&#39;, &#39;PO23-09561_46_1_annotated_0_7180_448_7628.png&#39;: &#39;deuk&#39;, &#39;PO23-09561_46_1_annotated_0_7242_448_7690.png&#39;: &#39;deuk&#39;, &#39;PO23-10367_9_1_annotated_8975_0_9423_448.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_9107_0_9555_448.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_5744_359_6192_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_6103_359_6551_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_6462_359_6910_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_6821_359_7269_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_7180_359_7628_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_7539_359_7987_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_7898_359_8346_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_8257_359_8705_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_8616_359_9064_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_8975_359_9423_807.png&#39;: &#39;barst&#39;, &#39;PO23-10367_9_1_annotated_9107_359_9555_807.png&#39;: &#39;barst&#39;, &#39;PO23-12572_3_2_annotated_8975_1436_9423_1884.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_9334_1436_9782_1884.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_9675_1436_10123_1884.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_0_3231_448_3679.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_0_3590_448_4038.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_0_3949_448_4397.png&#39;: &#39;open voeg&#39;, &#39;PO23-12572_3_2_annotated_0_4308_448_4756.png&#39;: &#39;open voeg&#39;, &#39;PO23-12884_2_1_annotated_9111_0_9559_448.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_359_9559_807.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_718_9559_1166.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_1077_9559_1525.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_1436_9559_1884.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_1795_9559_2243.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_2154_9559_2602.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_2513_9559_2961.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_2872_9559_3320.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_3231_9559_3679.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_3590_9559_4038.png&#39;: &#39;zaag&#39;, &#39;PO23-12884_2_1_annotated_9111_3949_9559_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-13050_2_2_annotated_0_0_448_448.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_359_448_807.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_718_448_1166.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_1077_448_1525.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_1436_448_1884.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_1795_448_2243.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_2154_448_2602.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_2513_448_2961.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_2872_448_3320.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_3231_448_3679.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_3590_448_4038.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_3949_448_4397.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_4308_448_4756.png&#39;: &#39;open fout&#39;, &#39;PO23-13050_2_2_annotated_0_4351_448_4799.png&#39;: &#39;open fout&#39;, &#39;PO23-13713_4_2_annotated_0_0_448_448.png&#39;: &#39;open knop&#39;, &#39;PO23-13713_4_2_annotated_6462_0_6910_448.png&#39;: &#39;zaag&#39;, &#39;PO23-13713_4_2_annotated_7180_0_7628_448.png&#39;: &#39;zaag&#39;, &#39;PO23-13713_4_2_annotated_7539_0_7987_448.png&#39;: &#39;zaag&#39;, &#39;PO23-13713_4_2_annotated_7609_0_8057_448.png&#39;: &#39;zaag&#39;, &#39;PO23-13713_4_2_annotated_0_359_448_807.png&#39;: &#39;open knop&#39;, &#39;PO23-13713_4_2_annotated_0_718_448_1166.png&#39;: &#39;open knop&#39;, &#39;PO23-13713_4_2_annotated_0_1077_448_1525.png&#39;: &#39;open knop&#39;, &#39;PO23-13713_4_2_annotated_0_3949_448_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-13713_4_2_annotated_0_4251_448_4699.png&#39;: &#39;zaag&#39;, &#39;PO23-17097_4_2_annotated_8257_7180_8705_7628.png&#39;: &#39;deuk&#39;, &#39;PO23-17097_4_2_annotated_8338_7180_8786_7628.png&#39;: &#39;deuk&#39;, &#39;PO23-17097_4_2_annotated_8257_7461_8705_7909.png&#39;: &#39;deuk&#39;, &#39;PO23-17097_4_2_annotated_8338_7461_8786_7909.png&#39;: &#39;deuk&#39;, &#39;PO23-18372_18_2_annotated_8616_7456_9064_7904.png&#39;: &#39;deuk&#39;, &#39;PO23-18372_18_2_annotated_8642_7456_9090_7904.png&#39;: &#39;deuk&#39;, &#39;PO23-20489_42_2_annotated_11129_1795_11577_2243.png&#39;: &#39;veneer piece&#39;, &#39;PO23-20489_42_2_annotated_11339_1795_11787_2243.png&#39;: &#39;veneer piece&#39;, &#39;PO23-20489_42_2_annotated_10770_2154_11218_2602.png&#39;: &#39;veneer piece&#39;, &#39;PO23-20489_42_2_annotated_11129_2154_11577_2602.png&#39;: &#39;veneer piece&#39;, &#39;PO23-20489_42_2_annotated_11339_2154_11787_2602.png&#39;: &#39;veneer piece&#39;, &#39;PO23-20951_1_1_annotated_9110_0_9558_448.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_359_9558_807.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_718_9558_1166.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_1077_9558_1525.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_1436_9558_1884.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_1795_9558_2243.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_2154_9558_2602.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_2513_9558_2961.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_2872_9558_3320.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_3231_9558_3679.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_3590_9558_4038.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_3949_9558_4397.png&#39;: &#39;zaag&#39;, &#39;PO23-20951_1_1_annotated_9110_4087_9558_4535.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_2872_0_3320_448.png&#39;: &#39;deuk&#39;, &#39;PO23-21526_9_2_annotated_3231_0_3679_448.png&#39;: &#39;deuk&#39;, &#39;PO23-21526_9_2_annotated_7539_0_7987_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_7898_0_8346_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_8257_0_8705_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_8616_0_9064_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_8975_0_9423_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_9334_0_9782_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_9693_0_10141_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_10052_0_10500_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_10355_0_10803_448.png&#39;: &#39;zaag&#39;, &#39;PO23-21526_9_2_annotated_4667_718_5115_1166.png&#39;: &#39;vlek&#39;, &#39;PO23-21526_9_2_annotated_5026_718_5474_1166.png&#39;: &#39;vlek&#39;, &#39;PO23-21526_9_2_annotated_10355_7180_10803_7628.png&#39;: &#39;deuk&#39;, &#39;PO23-21526_9_2_annotated_10052_7416_10500_7864.png&#39;: &#39;deuk&#39;, &#39;PO23-21526_9_2_annotated_10355_7416_10803_7864.png&#39;: &#39;deuk&#39;, &#39;PO23-24021_50_1_annotated_359_3949_807_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_718_3949_1166_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_1077_3949_1525_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_1795_3949_2243_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_2154_3949_2602_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_3590_3949_4038_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_5026_3949_5474_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_5385_3949_5833_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_6462_3949_6910_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_6821_3949_7269_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_7898_3949_8346_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_8257_3949_8705_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_9693_3949_10141_4397.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_359_4042_807_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_718_4042_1166_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_1077_4042_1525_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_1795_4042_2243_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_2154_4042_2602_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_3590_4042_4038_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_5026_4042_5474_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_5385_4042_5833_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_6462_4042_6910_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_6821_4042_7269_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_7898_4042_8346_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_8257_4042_8705_4490.png&#39;: &#39;vlek&#39;, &#39;PO23-24021_50_1_annotated_9693_4042_10141_4490.png&#39;: &#39;vlek&#39;}
+Test Accuracy: 0.9861
+Test Recall: 0.6381
+Test Precision: 0.7880
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Confusion matrix</span>
+
+<span class="c1"># Initialize the confusion matrix</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">confusion_matrix_dict</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">confusion_matrix</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Populate the confusion matrix</span>
+<span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="s2">&quot;guess_bg&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="s2">&quot;guess_fault&quot;</span><span class="p">]]</span>
+    <span class="n">confusion_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="c1"># Print the confusion matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Background&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Fault&#39;</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">categories</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">category</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">confusion_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">confusion_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             Background Fault
+   open fout:         25   124
+   open voeg:          5    16
+        deuk:          1    14
+        zaag:         50    79
+       barst:         10    10
+   open knop:          9     3
+    snijfout:          8     3
+veneer piece:          2     7
+        vlek:         30     2
+    ongekend:          2     0
+        kras:         14    17
+          bg:      16076    74
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cut-out-method">
+<h2>Cut-out Method<a class="headerlink" href="#cut-out-method" title="Link to this heading">#</a></h2>
+<p>This section describes the generation process for the cut-out method. In this approach, faults are isolated from the original input images. The same training code as mentioned previously should then be used for further processing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Directory paths</span>
+<span class="n">main_directory</span> <span class="o">=</span> <span class="s2">&quot;cutout_folders&quot;</span>
+<span class="n">cutout_directory</span> <span class="o">=</span> <span class="n">main_directory</span> <span class="o">+</span> <span class="s2">&quot;/cutout&quot;</span>
+<span class="n">train</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+<span class="n">validate</span> <span class="o">=</span> <span class="s2">&quot;validate&quot;</span>
+<span class="n">test</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">main_directory</span> <span class="o">+</span> <span class="s2">&quot;/dataset&quot;</span>
+
+<span class="c1"># Create dataset &amp; cutout folders for each class</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">[</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">validate</span><span class="p">]:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dataset</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cutout_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Create a dictionary to map category IDs to category names</span>
+<span class="n">category_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]:</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="n">category_dict</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">category_dict</span><span class="p">)</span>    
+
+<span class="c1"># Minimum dimension for images</span>
+<span class="n">min_dim</span> <span class="o">=</span> <span class="n">size</span>
+
+<span class="c1"># Dictionary to store the fault category for each isolated fault in an image</span>
+<span class="n">image_fault_dic</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Loop over all images in the dataset</span>
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Processing images&#39;</span><span class="p">):</span>
+    <span class="c1"># Get the file name and its name without extension</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">]</span>
+    <span class="n">filename_without_extension</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Load the image</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">dataset_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Initialize exclusion zones list</span>
+    <span class="n">exclusion_zones</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Get annotations for the current image</span>
+        <span class="n">bbox_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fault_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">coco_data</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;image_id&#39;</span><span class="p">]:</span>
+                <span class="n">bbox_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;bbox&#39;</span><span class="p">])</span>
+                <span class="n">fault_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">category_dict</span><span class="p">[</span><span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]])</span>
+
+        <span class="c1"># Cut out faults (bounding boxes) with adjusted dimensions</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bbox_array</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">bbox</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+            <span class="c1"># Calculate the required extra width and height to meet the minimum dimensions</span>
+            <span class="n">extra_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_dim</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span>
+            <span class="n">extra_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_dim</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
+
+            <span class="n">extra_left</span> <span class="o">=</span> <span class="n">extra_width</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">extra_right</span> <span class="o">=</span> <span class="n">extra_width</span> <span class="o">-</span> <span class="n">extra_left</span>
+            <span class="n">extra_above</span> <span class="o">=</span> <span class="n">extra_height</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">extra_below</span> <span class="o">=</span> <span class="n">extra_height</span> <span class="o">-</span> <span class="n">extra_above</span>
+
+            <span class="c1"># Add padding and adjust bounding box so it doesn&#39;t go beyond image boundaries</span>
+            <span class="n">x_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">extra_left</span><span class="p">)</span>
+            <span class="n">y_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">extra_above</span><span class="p">)</span>
+            <span class="n">x_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="n">extra_right</span><span class="p">)</span>
+            <span class="n">y_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">extra_below</span><span class="p">)</span>
+
+            <span class="c1"># Further adjust if still below minimum width or height</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x_end</span> <span class="o">-</span> <span class="n">x_start</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_dim</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">x_end</span> <span class="o">==</span> <span class="n">width</span><span class="p">:</span>  <span class="c1"># If we hit the right edge, add more to the left</span>
+                    <span class="n">x_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_end</span> <span class="o">-</span> <span class="n">min_dim</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># If we hit the left edge, add more to the right</span>
+                    <span class="n">x_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">x_start</span> <span class="o">+</span> <span class="n">min_dim</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">y_end</span> <span class="o">-</span> <span class="n">y_start</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_dim</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">y_end</span> <span class="o">==</span> <span class="n">height</span><span class="p">:</span>  <span class="c1"># If we hit the bottom edge, add more to the top</span>
+                    <span class="n">y_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_end</span> <span class="o">-</span> <span class="n">min_dim</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># If we hit the top edge, add more to the bottom</span>
+                    <span class="n">y_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">y_start</span> <span class="o">+</span> <span class="n">min_dim</span><span class="p">)</span>
+
+            <span class="n">exclusion_zones</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_start</span><span class="p">,</span> <span class="n">y_start</span><span class="p">,</span> <span class="n">x_end</span><span class="p">,</span> <span class="n">y_end</span><span class="p">))</span>
+
+            <span class="c1"># Get the fault name</span>
+            <span class="n">fault_name</span> <span class="o">=</span> <span class="n">fault_array</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">fault_name</span> <span class="ow">in</span> <span class="n">keepers</span><span class="p">:</span>
+                <span class="c1"># Create a new file name for the cropped image</span>
+                <span class="n">new_file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename_without_extension</span><span class="si">}</span><span class="s2">_window_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">fault_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+                <span class="c1"># Add to the image_fault_dic</span>
+                <span class="n">image_fault_dic</span><span class="p">[</span><span class="n">new_file_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fault_name</span>
+
+                <span class="c1"># Crop the image and save it</span>
+                <span class="n">cropped_image</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span><span class="p">]</span>
+                <span class="n">save_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cutout_directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">split_dict</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">classes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">new_file_name</span><span class="si">}</span><span class="s2">.jpg&quot;</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">cropped_image</span><span class="p">)</span>
+            
+        <span class="c1"># Apply black pixels to the exclusion zones in the original image</span>
+        <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">exclusion_zones</span><span class="p">:</span>
+            <span class="n">x_start</span><span class="p">,</span> <span class="n">y_start</span><span class="p">,</span> <span class="n">x_end</span><span class="p">,</span> <span class="n">y_end</span> <span class="o">=</span> <span class="n">zone</span>
+            <span class="n">file</span><span class="p">[</span><span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Set the pixels in the zone to black</span>
+
+    <span class="c1"># Save the modified original image</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cutout_directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">split_dict</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename_without_extension</span><span class="si">}</span><span class="s2">.jpg&quot;</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="anomaly_detection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Anomaly Detection with PaDiM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="multi_class_classification.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Multi-Class Classification</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configurable-variables">Configurable variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataloaders">Dataloaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn-training">CNN training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-evaluation">Test evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-out-method">Cut-out Method</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Karel Debedts
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
